@@ -17,15 +17,15 @@ retrieval:
   snapshot_date: 2026-09-07
   software_commit: 8f46bbfa91f5d9900c8b08a5d552c3df5c9597b0
   commands:
-    - benchmark-radar search "scientific research agent" --scope catalog --limit 20 --json
-    - benchmark-radar search "software engineering agent" --scope catalog --limit 20 --json
-    - benchmark-radar show "model-reports:swe_bench_science" --json
-    - benchmark-radar show "claire-radar:2606.12736" --json
-    - benchmark-radar show "model-reports:swe_lancer" --json
+    - benchmark-radar search "PaperBench" --scope catalog --limit 20 --json --index /path/to/v0.11.0/site/data/benchmark-index.json --shards /path/to/v0.11.0/site/data/benchmarks --snapshots /path/to/v0.11.0/data/snapshots
+    - benchmark-radar search "software engineering agent" --scope catalog --limit 20 --json --index /path/to/v0.11.0/site/data/benchmark-index.json --shards /path/to/v0.11.0/site/data/benchmarks --snapshots /path/to/v0.11.0/data/snapshots
+    - benchmark-radar show "model-reports:swe_bench_science" --json --index /path/to/v0.11.0/site/data/benchmark-index.json --shards /path/to/v0.11.0/site/data/benchmarks --snapshots /path/to/v0.11.0/data/snapshots
+    - benchmark-radar show "opencompass:1730" --json --index /path/to/v0.11.0/site/data/benchmark-index.json --shards /path/to/v0.11.0/site/data/benchmarks --snapshots /path/to/v0.11.0/data/snapshots
+    - benchmark-radar show "llm-stats:swe-lancer" --json --index /path/to/v0.11.0/site/data/benchmark-index.json --shards /path/to/v0.11.0/site/data/benchmarks --snapshots /path/to/v0.11.0/data/snapshots
   record_ids:
     - model-reports:swe_bench_science
-    - claire-radar:2606.12736
-    - model-reports:swe_lancer
+    - opencompass:1730
+    - llm-stats:swe-lancer
 candidates:
   - record_id: model-reports:swe_bench_science
     name: SWE-bench Science
@@ -37,17 +37,17 @@ candidates:
     evidence_coverage: paper and task description recorded; no repository or dataset link in the Radar record
     decision: adopt
     reason: closest match to issue triage and patch verification in scientific code, with explicit failure mechanisms
-  - record_id: claire-radar:2606.12736
-    name: SciAgentArena
-    source_evidence: https://arxiv.org/abs/2606.12736
-    task_fit: high for literature-and-experiment planning, medium for code patching
-    protocol: approximately 200 scientific research tasks with stepwise verification in an agent-agnostic environment
-    maintenance: medium; public project site and dated paper require periodic task and verifier checks
-    openness: public project site; dataset/repository link is not recorded in the Radar record
-    evidence_coverage: paper and project website recorded
+  - record_id: opencompass:1730
+    name: PaperBench
+    source_evidence: https://arxiv.org/abs/2504.01848
+    task_fit: high for literature-led replication and experiment execution
+    protocol: 20 ICML 2024 papers decomposed into 8,316 gradable rubric tasks with hierarchical judging
+    maintenance: medium; paper and OpenAI repository are recorded in the frozen record
+    openness: unknown in Radar; paper and repository links are recorded
+    evidence_coverage: paper and repository recorded
     decision: adopt as a complementary research-reasoning track
-    reason: covers scientific investigation and evidence chains that repository repair alone misses
-  - record_id: model-reports:swe_lancer
+    reason: covers end-to-end research replication and evidence chains that repository repair alone misses
+  - record_id: llm-stats:swe-lancer
     name: SWE-Lancer
     source_evidence: https://github.com/openai/frontier-evals/tree/main/project/swelancer
     task_fit: medium; real software-freelancer tasks but no scientific-domain requirement
@@ -60,9 +60,9 @@ candidates:
 selection:
   primary:
     - model-reports:swe_bench_science
-    - claire-radar:2606.12736
+    - opencompass:1730
   control:
-    - model-reports:swe_lancer
+    - llm-stats:swe-lancer
   conclusion: adopt the two-track primary suite and report SWE-Lancer separately as a non-scientific engineering control; do not combine their scores into one trend.
 limitations:
   - Radar retrieval is candidate discovery, not a suitability judgment; every table cell above was checked against the cited source record.

@@ -682,7 +682,7 @@ def test_cli_labels_partial_candidates_without_hiding_them(tmp_path: Path, capsy
             "--scope",
             "catalog",
             "--limit",
-            "2",
+            "1",
             "--index",
             str(paths.index),
             "--shards",
@@ -695,7 +695,7 @@ def test_cli_labels_partial_candidates_without_hiding_them(tmp_path: Path, capsy
 
     assert exit_code == 0
     assert "No benchmark matched every query token" in output
-    assert "Inspecting 2 partial lexical candidates" in output
+    assert "Inspecting 1 of 2 partial lexical candidates" in output
     assert "Agent Workbench" in output
 
 
